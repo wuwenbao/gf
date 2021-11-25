@@ -133,6 +133,9 @@ func (d *DriverMysql) TableFields(ctx context.Context, table string, schema ...s
 		table, useSchema, d.GetGroup(),
 	)
 	v := tableFieldsMap.GetOrSetFuncLock(tableFieldsCacheKey, func() interface{} {
+		if table == "" {
+			return nil
+		}
 		var (
 			result    Result
 			link, err = d.SlaveLink(useSchema)
